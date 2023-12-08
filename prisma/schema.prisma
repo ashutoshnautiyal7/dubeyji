@@ -77,20 +77,20 @@ model Appointment{
 
 // This is for the calendar  management
 
-model Cities{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String @unique
+// model Cities{
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   name String @unique
 
-  days Day[]
-  closeddays ClosedDay[]
+//   days Day[]
+//   closeddays ClosedDay[]
 
-}
+// }
 
 
 model Day {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  cityname String
-  city Cities @relation(fields: [cityname], references: [name])
+  // cityname String
+  // city Cities @relation(fields: [cityname], references: [name])
 
   name String
   dayOfWeek Int // @see getDay() documentation, 0 for Sunday, 1 for Monday, ...
@@ -101,8 +101,8 @@ model Day {
 
 model ClosedDay {
   id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  cityname String
-  city Cities @relation(fields: [cityname], references: [name])
+  // cityname String
+  // city Cities @relation(fields: [cityname], references: [name])
   date DateTime @unique
 }
 
