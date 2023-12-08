@@ -6,7 +6,7 @@ import ReactCalendar from "react-calendar";
 
 import "./Calendar.css";
 
-import { format, formatISO, isBefore, parse } from "date-fns";
+import { isSameDay, format, formatISO, isBefore, parse } from "date-fns";
 import {
   CLOSING_TIME,
   INTERVAL,
@@ -20,6 +20,7 @@ import { Day } from "@prisma/client";
 import { useModal } from "@/hooks/use-modal-store";
 import { currentUser } from "@clerk/nextjs";
 import qs from "query-string";
+import { db } from "@/lib/db";
 
 type DateTime = {
   justDate: Date | null;
@@ -95,9 +96,12 @@ const Calendar = ({ days, closedDays }: CalendarProps) => {
           minDate={new Date()}
           className="REACT-CALENDAR p-2 mx-auto "
           view="month"
-          tileDisabled={({ date }) =>
-            closedDays && closedDays.includes(formatISO(date))
-          }
+          tileDisabled={({ date }) => {
+            const formattedDate = format(date, "yyyy-MM-dd"); // Format the date
+            return closedDays.some((closedDate) =>
+              isSameDay(new Date(closedDate), new Date(formattedDate))
+            );
+          }}
           onClickDay={(date) =>
             setDate((prev) => ({
               ...prev,
