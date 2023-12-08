@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import ReactCalendar from "react-calendar";
 import "../../components/Calendar/Calendar.css";
-import { formatISO } from "date-fns";
+import { format, formatISO, isSameDay } from "date-fns";
 
 type Props = {
   closedDays: string[];
@@ -64,9 +64,12 @@ const ClosingDate = ({ closedDays }: Props) => {
         className="REACT-CALENDAR p-2 mx-auto"
         view="month"
         onClickDay={handleDateClick}
-        tileDisabled={({ date }) =>
-          closedDays && closedDays.includes(formatISO(date))
-        }
+        tileDisabled={({ date }) => {
+          const formattedDate = format(date, "yyyy-MM-dd"); // Format the date
+          return closedDays.some((closedDate) =>
+            isSameDay(new Date(closedDate), new Date(formattedDate))
+          );
+        }}
       />
 
       {/* Display selected dates */}
